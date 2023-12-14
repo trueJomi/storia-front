@@ -2,6 +2,7 @@ import React from 'react'
 import { type Story } from '../models/Stroy.model'
 import { Container, Typography } from '@mui/material'
 import ImagePreview from './ImagePreview'
+import SimpleImagePreview from './SimpleImagePreview'
 
 const StoryCompleteAdaptative: React.FC<{ story: Story }> = ({ story }) => {
   return (
@@ -11,6 +12,9 @@ const StoryCompleteAdaptative: React.FC<{ story: Story }> = ({ story }) => {
             style={{ textAlign: 'center', marginBottom: 20 }}>
             {story.title}
         </Typography>
+        { story.image !== undefined && <div className=' w-full' >
+          <SimpleImagePreview url={story.image.url} alt='main' clas='mx-auto' />
+        </div>}
         {(story.images?.introduction.url !== undefined) && <ImagePreview context={story.images} image={story.images.introduction} idStory = {story.id} alt='introduction' clas='float-right' />}
         {story.introduction.map((paragraft, idx) => (
             <Typography

@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
-import { Box, Alert, Snackbar, TextField, IconButton, type SnackbarCloseReason } from '@mui/material'
+import { Box, Alert, Snackbar, TextField, IconButton, type SnackbarCloseReason, FormControl, InputLabel, Select, MenuItem, type SelectChangeEvent } from '@mui/material'
 import { MdClose, MdSend } from 'react-icons/md'
 import { LoadingButton } from '@mui/lab'
+import { generosList } from '../utils/generos.utils'
 
 interface PropsInput {
   getCuento: (prompt: string) => Promise<void>
@@ -10,6 +11,7 @@ interface PropsInput {
 
 export const ChatInput: React.FC<PropsInput> = ({ getCuento, loading }) => {
   const [prompt, setPrompt] = useState<string>('')
+  const [genero, setGenero] = useState<number>(0)
   const [open, setOpen] = useState<boolean>(false)
 
   const handleClose = (_event: any, reason: SnackbarCloseReason) => {
@@ -21,11 +23,18 @@ export const ChatInput: React.FC<PropsInput> = ({ getCuento, loading }) => {
   const sendCuento = (input: React.FormEvent<HTMLFormElement>) => {
     input.preventDefault()
     if (prompt !== '') {
-      void getCuento(prompt).then(() => {
+      const promptWithGenero = generosList[genero].function(prompt)
+      void getCuento(promptWithGenero).then(() => {
         setOpen(true)
         setPrompt('')
       })
     }
+  }
+
+  const handleChange = (event: SelectChangeEvent) => {
+    const value = event.target.value
+    const newGenero = parseInt(value)
+    setGenero(newGenero)
   }
 
   return (
@@ -52,6 +61,19 @@ export const ChatInput: React.FC<PropsInput> = ({ getCuento, loading }) => {
         </Alert>
       </Snackbar>
       <Box onSubmit={sendCuento} sx={{ my: 1, display: 'flex', width: '100%' }} component='form' >
+        <FormControl className='w-44' >
+          <InputLabel>Genero</InputLabel>
+          <Select
+            label="Genero"
+            disabled={loading}
+            value={String(genero)}
+            onChange={handleChange}
+          >
+            {generosList.map((genero, idx) => (
+              <MenuItem key={genero.nombre} value={idx}>{genero.nombre}</MenuItem>
+            ))}
+          </Select>
+        </FormControl>
         <TextField
           fullWidth
           type='text'

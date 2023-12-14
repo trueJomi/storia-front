@@ -17,8 +17,7 @@ export async function generateImage (prompt: string, idToken: string): Promise<I
     `${API_URL}/images/`, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': 'https://cuentos-ai.web.app'
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify({
         prompt,
@@ -36,8 +35,7 @@ export async function generateImages3 (id: string, idToken: string): Promise<Ima
     `${API_URL}/images/from-story/`, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': 'https://cuentos-ai.web.app'
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify({
         id,

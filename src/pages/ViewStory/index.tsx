@@ -59,6 +59,9 @@ const ViewStory: React.FC = () => {
             </div>
           </Stack>
           <StoryCompleteAdaptative story={story} />
+          {story.input !== undefined && <Stack className='my-7'>
+            <span className="font-bold text-lg" >Frase referencial:</span> {story.input}
+          </Stack>}
           <Questions data={questions} story={story}/>
         </Container>
       : <Loading/>

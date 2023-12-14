@@ -6,6 +6,8 @@ export interface Story {
   introduction: string[]
   middle: string[]
   end: string[]
+  image?: Image
+  input?: string
   images?: Images
   date: Date
 }

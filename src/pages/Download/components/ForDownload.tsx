@@ -2,16 +2,16 @@ import React, { useEffect } from 'react'
 import { type Question } from '../../../models/Questions.model'
 import { type Story } from '../../../models/Stroy.model'
 import { Container, Typography } from '@mui/material'
-import ImagePreview from '../../../components/ImagePreview'
 import { QuestionsByType } from '../../../adapters/Question.adapter'
 import { useNavigate } from 'react-router-dom'
+import SimpleImagePreview from '../../../components/SimpleImagePreview'
 
 const ForDownload: React.FC<{ questions: Question[], story: Story }> = ({ story, questions }) => {
   const navigate = useNavigate()
   useEffect(() => {
     window.print()
     setTimeout(() => {
-      navigate(`/story/${story.id}`)
+      navigate(-1)
     }, 3000)
   }, [])
   return (
@@ -21,7 +21,10 @@ const ForDownload: React.FC<{ questions: Question[], story: Story }> = ({ story,
             style={{ textAlign: 'center', marginBottom: 20 }}>
             {story.title}
         </Typography>
-        {(story.images?.introduction.url !== undefined) && <ImagePreview context={story.images} image={story.images.introduction} idStory = {story.id} alt='introduction' clas='float-right' />}
+        { story.image !== undefined && <div className=' w-full' >
+          <SimpleImagePreview url={story.image.url} alt='main' clas='mx-auto' />
+        </div>}
+        {(story.images?.introduction.url !== undefined) && <SimpleImagePreview url={story.images.introduction.url} alt='introduction' clas='float-right' />}
         {story.introduction.map((paragraft, idx) => (
             <Typography
             paragraph
@@ -31,7 +34,7 @@ const ForDownload: React.FC<{ questions: Question[], story: Story }> = ({ story,
               {paragraft}
             </Typography>
         ))}
-        { story.images?.middle.url !== undefined && <ImagePreview context={story.images} image={ story.images.middle} idStory = {story.id} alt='middle' clas='float-left' />}
+        { story.images?.middle.url !== undefined && <SimpleImagePreview url={story.images.middle.url} alt='middle' clas='float-left' />}
         {story.middle.map((paragraft, idx) => (
             <Typography
             paragraph
@@ -41,7 +44,7 @@ const ForDownload: React.FC<{ questions: Question[], story: Story }> = ({ story,
               {paragraft}
             </Typography>
         ))}
-        { story.images?.end.url !== undefined && <ImagePreview context={story.images} image={story.images.end} idStory = {story.id} alt='end' clas='float-right' />}
+        { story.images?.end.url !== undefined && <SimpleImagePreview url={story.images.end.url} alt='end' clas='float-right' />}
         {story.end.map((paragraft, idx) => (
             <Typography
             paragraph
@@ -51,6 +54,9 @@ const ForDownload: React.FC<{ questions: Question[], story: Story }> = ({ story,
               {paragraft}
             </Typography>
         ))}
+        {story.input !== undefined && <div className='my-7'>
+            <span className="font-bold text-lg" >Frase referencial:</span> {story.input}
+          </div>}
         {(questions !== undefined && questions.length !== 0) && <QuestionPDf questions={questions} />}
     </Container>
   )
